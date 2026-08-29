@@ -1,0 +1,148 @@
+<nz-layout class="main-layout">
+    <nz-header class="header">
+        <div class="header-logo">ประวัติคนไข้</div>
+        <div class="header-right">
+            <span class="user-info">ผู้ใช้งาน: {{ currentUser?.name || 'Admin' }}</span>
+            <button nz-button nzType="default" class="logout-btn" (click)="logout()">
+                <svg lucideLogOut size="16"></svg>
+                ออกจากระบบ
+            </button>
+        </div>
+    </nz-header>
+
+    <nz-content class="content-wrapper">
+        <nz-card class="search-card">
+            <form nz-form [formGroup]="searchForm" nzLayout="vertical">
+                <div nz-row [nzGutter]="16">
+                    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+                        <nz-form-item>
+                            <nz-form-label>ค้นหาตามชื่อ</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="name" placeholder="ชื่อ หรือ นามสกุล" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+                        <nz-form-item>
+                            <nz-form-label>เลขประจำตัวประชาชน</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="idCard" placeholder="ค้นหาเลข 13 หลัก" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+                        <nz-form-item>
+                            <nz-form-label>เพศ</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="gender" nzShowSearch>
+                                    <nz-option nzValue="ทั้งหมด" nzLabel="ทั้งหมด"></nz-option>
+                                    <nz-option nzValue="หญิง" nzLabel="หญิง"></nz-option>
+                                    <nz-option nzValue="ชาย" nzLabel="ชาย"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row [nzGutter]="16">
+                    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+                        <nz-form-item>
+                            <nz-form-label>เบอร์โทรศัพท์</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="phone" placeholder="ค้นหาเบอร์โทรศัพท์" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+                        <nz-form-item>
+                            <nz-form-label>วันเกิด</nz-form-label>
+                            <nz-form-control>
+                                <nz-date-picker formControlName="dob" nzPlaceHolder="วว - ดด - ปปปป"
+                                    nzFormat="dd-MM-yyyy" style="width: 100%;"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+                        <nz-form-item>
+                            <nz-form-label>สถานะการรักษา</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="status" nzShowSearch>
+                                    <nz-option nzValue="ทั้งหมด" nzLabel="ทั้งหมด"></nz-option>
+                                    <nz-option nzValue="หาย" nzLabel="หาย"></nz-option>
+                                    <nz-option nzValue="รักษาอยู่" nzLabel="รักษาอยู่"></nz-option>
+                                    <nz-option nzValue="ยกเลิกการรักษา" nzLabel="ยกเลิกการรักษา"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </form>
+        </nz-card>
+
+
+        <div class="add-btn">
+            <button nz-button nzType="primary" class="action-btn" routerLink="/add-edit">เพิ่มข้อมูล</button>
+        </div>
+
+
+
+        <div class="table-summary">
+            พบข้อมูลทั้งหมด <span class="summary-count">{{ totalRecords }}</span> รายการ
+        </div>
+
+        <nz-card class="table-card">
+            <nz-table #basicTable [nzData]="displayData" [nzShowPagination]="false" [nzFrontPagination]="false">
+                <thead>
+                    <tr>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>เลขประจำตัว</th>
+                        <th>เพศ</th>
+                        <th>วันเกิด</th>
+                        <th>อายุ</th>
+                        <th>เบอร์โทร</th>
+                        <th>โรค</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data; let i = index">
+                        <td>{{ data.firstName }} {{ data.lastName }}</td>
+                        <td>{{ data.idCard }}</td>
+                        <td>{{ data.gender }}</td>
+                        <td>{{ data.dob }}</td>
+                        <td>{{ data.age }}</td>
+                        <td>{{ data.phone }}</td>
+                        <td>{{ data.underlyingDiseases.join(',') }}</td>
+                        <td>
+                            <nz-tag [ngClass]="{
+                'tag-recovered': data.status === 'หาย',
+                'tag-treating': data.status === 'รักษาอยู่',
+                'tag-cancelled': data.status === 'ยกเลิกการรักษา'
+                }">{{ data.status }}</nz-tag>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button nz-button class="btn-view" routerLink="/view" [queryParams]="{id: data.id}">
+                                    <nz-icon nzType="eye" />
+                                </button>
+                                <button nz-button class="btn-edit" routerLink="/add-edit" [queryParams]="{id: data.id}">
+                                    <nz-icon nzType="edit" />
+                                </button>
+                                <button nz-button class="btn-delete" (click)="deletePatient(data.id)">
+                                    <nz-icon nzType="delete" />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+
+            <div class="pagination-wrapper">
+                <div class="page-info">หน้า {{ pageIndex }} จาก {{ totalPages }}</div>
+                <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="totalRecords" [nzPageSize]="pageSize"
+                    (nzPageIndexChange)="onPageIndexChange($event)"></nz-pagination>
+            </div>
+        </nz-card>
+    </nz-content>
+</nz-layout>

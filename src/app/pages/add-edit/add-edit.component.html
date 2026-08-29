@@ -1,0 +1,126 @@
+<div class="page-container">
+  <div class="content-wrapper">
+    <button nz-button nzType="default" class="back-button" routerLink="/main">
+      <nz-icon nzType="arrow-left" />
+      ยกเลิก
+    </button>
+
+    <nz-card class="form-card" [nzTitle]="cardTitle">
+      <ng-template #cardTitle>
+        <div class="card-title">
+          {{ patientId ? "แก้ไขข้อมูลผู้ป่วย" :"เพิ่มข้อมูลผู้ป่วย"}}
+        </div>
+      </ng-template>
+
+      <form nz-form [formGroup]="patientForm" nzLayout="vertical" (ngSubmit)="onSubmit()">
+        <div nz-row [nzGutter]="16">
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>ชื่อ</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="firstName" placeholder="กรอกชื่อ" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>นามสกุล</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="lastName" placeholder="กรอกนามสกุล" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="16">
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>เลขประจำตัวประชาชน</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="idCard" placeholder="กรอกเลข 13 หลัก" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>เพศ</nz-form-label>
+              <nz-form-control>
+                <nz-select nzShowSearch formControlName="gender" nzPlaceHolder="เลือกเพศ">
+                  @for(gender of genderOptions; track $index){
+                  <nz-option [nzValue]="gender.value" [nzLabel]="gender.label"></nz-option>
+                  }
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="16">
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>วันเกิด</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker formControlName="dob" nzPlaceHolder="เลือกวันเกิด"
+                  nzFormat="dd-MM-yyyy" style="width: 100%;"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>อายุ</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="age" placeholder="กรอกอายุ" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="16">
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>เบอร์โทรศัพท์</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="phone" placeholder="กรอกเบอร์โทรศัพท์" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXs]="24" [nzSm]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>สถานะการรักษา</nz-form-label>
+              <nz-form-control>
+                <nz-select nzShowSearch formControlName="status" nzPlaceHolder="เลือกสถานะ">
+                  @for (option of patianStatusOption; track $index) {
+                  <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+                  }
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="16">
+          <div nz-col nzSpan="24">
+            <nz-form-item>
+              <nz-form-label>โรคประจำตัว</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="underlyingDiseases" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="เลือกโรคประจำตัว">
+                  @for (option of diseaseOptions; track $index) {
+                  <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+                  }
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button nz-button nzType="default" type="button" class="action-btn" routerLink="/main">ยกเลิก</button>
+          <button nz-button nzType="primary" type="submit" class="action-btn">
+            <nz-icon nzType="save" />
+            บันทึกข้อมูล
+          </button>
+        </div>
+      </form>
+    </nz-card>
+  </div>
+</div>
